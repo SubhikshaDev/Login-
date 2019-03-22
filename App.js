@@ -35,19 +35,15 @@ class Mainactivity extends React.Component {
         else{
             alert("Incorrect password");
         }
-        exit_func = () =>
+      }
+      componentDidMount() {
+  if({loginStatus:true})
   {
-    if({loginStatus:true})
-    {
-    <Router>
-      <div>
-        <Route exact path="/" component={Homepage} />
-      </div>
-    </Router>  
-    }
+     return <Redirect to="/Homepage" />
   }
-
 }
+
+
   render() {
     return ( 
       <View style={styles.container}>
