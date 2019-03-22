@@ -9,8 +9,8 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, TextInput, Button, Image, StatusBar, TouchableOpacity, BackHandler, BackAndroid} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
-import { Router, Route} from 'react-router'xu
-import { Redirect } from 'react-router-dom'xu
+import { Router, Route} from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -35,6 +35,17 @@ class Mainactivity extends React.Component {
         else{
             alert("Incorrect password");
         }
+        exit_func = () =>
+  {
+    if({loginStatus:true})
+    {
+    <Router>
+      <div>
+        <Route exact path="/" component={Homepage} />
+      </div>
+    </Router>  
+    }
+  }
 
 }
   render() {
@@ -79,17 +90,7 @@ class Mainactivity extends React.Component {
      
 
 class Homepage extends React.Component {
-  exit_func = () =>
-  {
-    if({loginStatus:true})
-    {
-    <Router>
-      <div>
-        <Route exact path="/" component={Homepage} />
-      </div>
-    </Router>  
-    }
-  }
+  
   componentDidMount() {
   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   if({loginStatus:true})
