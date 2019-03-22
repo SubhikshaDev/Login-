@@ -14,6 +14,7 @@ import { Redirect } from 'react-router-dom';
 
 
 
+
 type Props = {};
 class Mainactivity extends React.Component {
        state = {
@@ -39,6 +40,7 @@ class Mainactivity extends React.Component {
       componentDidMount() {
   if({loginStatus:true})
   {
+    console.log(this.state);
      return <Redirect to="/Homepage" />
   }
 }
