@@ -46,6 +46,8 @@ class Mainactivity extends React.Component {
 }
 
 
+
+
   render() {
     return ( 
       <View style={styles.container}>
@@ -90,11 +92,7 @@ class Mainactivity extends React.Component {
 class Homepage extends React.Component {
   
   componentDidMount() {
-  BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-  if({loginStatus:true})
-  {
-     return <Redirect to="/Next" />
-  }
+  BackHandler.addEventListener('hardwareBackPress', this.handleBackButton); 
 }
 
 componentWillUnmount() {
@@ -108,10 +106,7 @@ handleBackButton() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Homepage</Text>
-        <Button
-        title='exit'
-        onPress={this.exit_func}
-        />
+        
       </View>
     );
   }
