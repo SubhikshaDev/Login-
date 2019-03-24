@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Button, Image, StatusBar, TouchableOpacity, BackHandler, BackAndroid} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput, Button, Image, StatusBar,AsyncStorage,ImageBackground, TouchableOpacity, BackHandler, BackAndroid} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import { Router, Route} from 'react-router';
 import { Redirect } from 'react-router-dom';
@@ -15,39 +15,65 @@ import { Redirect } from 'react-router-dom';
 
 
 
+class SplashScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state ={ loginStatus: false };
+  }
+  render() {
+    if (this.state.loginStatus === 'true') {
+      return <Mainactivity/>
+    }
+    else if (this.state.loginStatus === 'false') {
+      return <LogIn screenProps={{ isLoggedIn: () => this.setState({ loginStatus: 'true' }) }}/>
+    }
+ 
+    return <SplashScreen/>
+  }
+}
 type Props = {};
 class Mainactivity extends React.Component {
        state = {
       username: '',
       password: '',
+      persistedName:'',
+     persistedPassword:'',
            loginStatus:false
    }
+   componentWillMount() {
+    this.check();
+  }
+  check(){
+    AsyncStorage.getItem('Ppassword').then((Ppassword) => {
+        this.setState({persistedPassword:Ppassword})
+       if(this.state.persistedPassword=='svce'){
+           this.props.navigation.navigate('Next');
+       }
+    })
+  }
+   persistData=()=>{
+ AsyncStorage.setItem('Pname', this.state.username).done();
+  AsyncStorage.setItem('Ppassword', this.state.password).done();
+}
 
     myfunc=()=>{
         if(this.state.username=='')
         {
-          alert("enter Username")
+          alert("enter Username");
+          return;
         }
-        else if(this.state.password=='svce'){
+        this.persistData();
+        if(this.state.password=='svce'){
             this.setState({loginStatus:true})
             this.props.navigation.navigate('Next');
+              this.setState({isLoggedIn:true});
 
         }         
         else{
             alert("Incorrect password");
         }
       }
-      componentDidMount() {
-  if({loginStatus:true})
-  {
-    console.log(this.state);
-     return <Redirect to="/Homepage" />
-  }
-}
-
-
-
-
+      
   render() {
     return ( 
       <View style={styles.container}>
@@ -90,6 +116,15 @@ class Mainactivity extends React.Component {
      
 
 class Homepage extends React.Component {
+
+  RedirectToMain=()=>{
+  AsyncStorage.clear();
+  this.setState({persistedPassword:''})
+         this.setState({username:''})
+         this.setState({password:''})
+          this.props.navigation.navigate('Initial');
+         return;
+    }
   
   componentDidMount() {
   BackHandler.addEventListener('hardwareBackPress', this.handleBackButton); 
@@ -104,8 +139,16 @@ handleBackButton() {
 }
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Homepage</Text>
+      <View style={styles.container}>
+        <Text style={{color:'#ffffff',fontSize:24}}>HOMEPAGE</Text>
+      
+    <TouchableOpacity
+         onPress={() => this.RedirectToMain()}
+  
+         style={styles.button}
+         >
+         <Text style={styles.buttontext}>Logout</Text>
+         </TouchableOpacity>
         
       </View>
     );
@@ -138,6 +181,9 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
   },
+
+  
+
   inputBox:{
     width:300,
     backgroundColor:'rgba(255,255,255,0.3)' ,
